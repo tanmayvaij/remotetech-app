@@ -1,20 +1,30 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { RootStackParamsList } from "./data/ScreenNames";
+import OnBoardingScreen from "./screens/OnBoardingScreen";
+import ResourceProvider from "./components/ResourceProvider";
+import { StatusBar } from "react-native";
 
-export default function App() {
+const App = () => {
+
+  const Stack = createNativeStackNavigator<RootStackParamsList>();
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+    <StatusBar />
+    <ResourceProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="ONBOARDING_SCREEN"
+            component={OnBoardingScreen}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ResourceProvider>
+    </>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
