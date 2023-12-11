@@ -9,10 +9,7 @@ import {
   useFonts,
 } from "@expo-google-fonts/josefin-sans";
 import * as ExpoSplashScreen from "expo-splash-screen";
-
-interface ResourceProviderProps {
-  children: React.JSX.Element;
-}
+import { ResourceProviderProps } from "../types";
 
 ExpoSplashScreen.preventAutoHideAsync();
 

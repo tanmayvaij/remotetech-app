@@ -4,10 +4,10 @@ import {
   View,
   Image,
   Dimensions,
-  ImageSourcePropType,
 } from "react-native";
 import React from "react";
 import { color, fontFamily, fontSize } from "../theme";
+import { OnBoardingScreenItemProps } from "../types";
 
 const { width } = Dimensions.get("window");
 
@@ -28,22 +28,16 @@ const styles = StyleSheet.create({
     fontSize: fontSize.text2xl.fontSize,
     lineHeight: fontSize.text2xl.lineHeight,
     fontFamily: fontFamily.bold,
-    color: color.blue900
+    color: color.blue900,
   },
   subTitleStyle: {
     textAlign: "center",
     marginTop: 10,
     fontFamily: fontFamily.regular,
     fontSize: fontSize.textBase.fontSize,
-    lineHeight: fontSize.textBase.lineHeight
+    lineHeight: fontSize.textBase.lineHeight,
   },
 });
-
-interface OnBoardingScreenItemProps {
-  image: ImageSourcePropType;
-  title: string;
-  subTitle: string;
-}
 
 const OnBoardingScreenItem: React.FC<OnBoardingScreenItemProps> = ({
   image,
