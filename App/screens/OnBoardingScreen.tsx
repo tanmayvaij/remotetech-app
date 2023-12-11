@@ -2,38 +2,27 @@ import {
   View,
   StyleSheet,
   FlatList,
-  Text,
-  Pressable,
-  Image,
   ViewToken,
 } from "react-native";
-import { OnBoardingScreenData } from "../data";
+import { OnBoardingScreenNavigationProps, OnBoardingScreenData } from "../data";
 import OnBoardingScreenItem from "../components/OnBoardingScreenItem";
 import { FontAwesome } from "@expo/vector-icons";
 import { color, fontFamily, spacing } from "../theme";
 import { useEffect, useState, useRef } from "react";
+import BrandHeader from "../components/BrandHeader";
+import { useNavigation } from "@react-navigation/native";
+import CustomButton from "../components/CustomButton";
 
 const styles = StyleSheet.create({
   screenStyle: {
-    flexGrow: 1,
+    height: "100%",
     backgroundColor: color.white,
-  },
-  brandingContainerStyle: {
-    alignItems: "center",
-    justifyContent: "center",
-    borderBottomLeftRadius: spacing.sp20,
-    borderBottomRightRadius: spacing.sp20,
-    backgroundColor: color.blue500,
-  },
-  brandingImageStyle: {
-    width: spacing.sp22,
-    height: spacing.sp22,
   },
   buttonsContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginHorizontal: spacing.sp04,
+    marginHorizontal: 15
   },
   buttonStyle: {
     backgroundColor: color.blue600,
@@ -88,6 +77,8 @@ interface ViewableItemsProps {
 }
 
 const OnBoardingScreen = () => {
+  const navigator = useNavigation<OnBoardingScreenNavigationProps>();
+
   const [visibleItemIndex, setVisibleItemIndex] = useState(0);
   const onViewCallBackChanged = useRef(
     ({ viewableItems }: ViewableItemsProps) => {
@@ -115,12 +106,9 @@ const OnBoardingScreen = () => {
 
   return (
     <View style={styles.screenStyle}>
-      <View style={styles.brandingContainerStyle}>
-        <Image
-          style={styles.brandingImageStyle}
-          source={require("../../assets/images/iconWithTextWhite.png")}
-        />
-      </View>
+      <BrandHeader />
+
+      {/* Sliding Cards */}
       <FlatList
         scrollEnabled={false}
         onViewableItemsChanged={onViewCallBackChanged.current}
@@ -134,6 +122,8 @@ const OnBoardingScreen = () => {
           <OnBoardingScreenItem {...item} key={index} />
         )}
       />
+
+      {/* Scroll Indicators */}
       <View style={styles.indicatorContainerStyle}>
         {OnBoardingScreenData.map((_, index) => (
           <View
@@ -148,36 +138,36 @@ const OnBoardingScreen = () => {
           />
         ))}
       </View>
+
+      {/* Login/Register Buttons */}
       <View style={styles.buttonsContainer}>
-        <Pressable
-          style={({ pressed }) => [
-            styles.buttonStyle,
-            styles.lightButtonStyle,
-            pressed && styles.lightPressedButtonStyle,
-          ]}
-        >
-          <Text style={[styles.buttonTextStyle, styles.lightButtonTextStyle]}>
-            Login
-          </Text>
-          <FontAwesome
-            name="sign-in"
-            size={spacing.sp11}
-            color={color.blue500}
-          />
-        </Pressable>
-        <Pressable
-          style={({ pressed }) => [
-            styles.buttonStyle,
-            pressed && styles.pressedButtonStyle,
-          ]}
-        >
-          <Text style={[styles.buttonTextStyle]}>Register</Text>
-          <FontAwesome
-            name="pencil-square-o"
-            size={spacing.sp11}
-            color={color.white}
-          />
-        </Pressable>
+        <CustomButton
+          onPress={() => navigator.navigate("USER_LOGIN_SCREEN")}
+          text="Login"
+          icon={
+            <FontAwesome
+              name="sign-in"
+              size={20}
+              color={color.blue500}
+            />
+          }
+          light
+          marginBottom={10}
+          marginHorizontal={4}
+        />
+        <CustomButton
+          onPress={() => navigator.navigate("USER_REGISTER_SCREEN")}
+          text="Register"
+          icon={
+            <FontAwesome
+              name="pencil-square-o"
+              size={20}
+              color={color.white}
+            />
+          }
+          marginBottom={10}
+          marginHorizontal={4}
+        />
       </View>
     </View>
   );
