@@ -1,10 +1,6 @@
 import { getItemAsync } from "expo-secure-store";
 import { apiSlice } from "./apiSlice";
-
-let authToken: string;
-getItemAsync("authToken").then((token) => {
-  authToken = token!;
-});
+import { QUERY_TAGS } from "../data/queryTags";
 
 const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -17,6 +13,7 @@ const authApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: [QUERY_TAGS.userProfile],
     }),
 
     userLogin: builder.mutation<
@@ -28,21 +25,32 @@ const authApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: [QUERY_TAGS.userProfile],
     }),
 
     userProfile: builder.query<
-      { email: string; lastName: string; firstName: string; _id: string, joinedOn: string, role: string, phone: string },
-      void
+      {
+        email: string;
+        lastName: string;
+        firstName: string;
+        _id: string;
+        joinedOn: string;
+        role: string;
+        phone: string;
+      },
+      string
     >({
-      query: () => ({
+      query: (authToken) => ({
         url: "/auth/user-profile",
         method: "GET",
         headers: {
           authToken,
         },
       }),
+      providesTags: [QUERY_TAGS.userProfile],
     }),
   }),
+
   overrideExisting: true,
 });
 

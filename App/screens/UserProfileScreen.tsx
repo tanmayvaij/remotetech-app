@@ -81,17 +81,16 @@ const styles = StyleSheet.create({
 });
 
 const UserProfileScreen = () => {
-  const { setAuthState } = useAuth();
+  const { setAuthState, authToken } = useAuth();
 
   const dispatch = useDispatch();
 
   const logOut = () => {
-    deleteItemAsync("authToken");
     setAuthState({ authToken: "", isAuthenticated: false });
     dispatch(apiSlice.util.resetApiState());
   };
 
-  const { data: userProfile } = useUserProfileQuery();
+  const { data: userProfile } = useUserProfileQuery(authToken);
 
   return (
     <View style={styles.screen}>

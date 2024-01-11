@@ -26,7 +26,7 @@ const MaterialTopNavigator = () => {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="MACHINE_DEVICE_SCREEN"
         component={MachineDeviceScreen}
         options={{
@@ -53,7 +53,7 @@ const MaterialTopNavigator = () => {
             />
           ),
         }}
-      />
+      /> */}
     </Tab.Navigator>
   );
 };

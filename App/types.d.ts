@@ -23,6 +23,7 @@ interface CustomButtonProps {
   fullWidth?: boolean;
   disabled?: boolean;
   size?: "sm";
+  isLoading?: boolean;
 }
 
 interface CustomTextInputProps {
@@ -53,4 +54,7 @@ interface DeviceCardProps {
   ipAddress: string;
   roomNumber: string;
   addedOn: string;
+  deviceType: string;
+  socketNumber: string
 }
+

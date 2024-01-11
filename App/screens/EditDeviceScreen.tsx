@@ -8,11 +8,12 @@ interface DeviceFormFieldsProps {
   roomNumber: string;
   deviceName: string;
   ipAddress: string;
+  socketNumber: string
 }
 
 const EditDeviceScreen = () => {
   const {
-    params: { _id, deviceName, ipAddress, roomNumber },
+    params: { _id, deviceName, ipAddress, roomNumber, socketNumber },
   } = useRoute<EditDeviceScreenRouteProps>();
 
   const [editDeviceMutation] = useEditDeviceMutation();
@@ -23,7 +24,7 @@ const EditDeviceScreen = () => {
 
   return (
     <DeviceForm
-      initialValues={{ deviceName, ipAddress, roomNumber }}
+      initialValues={{ deviceName, ipAddress, roomNumber, socketNumber }}
       apiCallBack={apiCallBack}
       formType="Edit"
     />

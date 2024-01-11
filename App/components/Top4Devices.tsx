@@ -6,6 +6,8 @@ import CustomActivityIndicator from "./CustomActivityIndicator";
 import { color, fontFamily } from "../theme";
 import MiniDeviceCard from "./MiniDeviceCard";
 import CustomButton from "./CustomButton";
+import { useNavigation } from "@react-navigation/native";
+import { HomeScreenNavigationProps } from "../data";
 
 const styles = StyleSheet.create({
   cardContainer: {
@@ -38,6 +40,8 @@ const styles = StyleSheet.create({
 const Top4Devices = () => {
   const { data, isLoading, isFetching } = useGetAllDevicesQuery(undefined);
 
+  const navigation = useNavigation<HomeScreenNavigationProps>();
+
   if (isLoading || isFetching) return <CustomActivityIndicator />;
 
   return data?.length === 0 ? null : (
@@ -48,7 +52,9 @@ const Top4Devices = () => {
           fullWidth={false}
           light
           size="sm"
-          onPress={() => {}}
+          onPress={() => {
+            navigation.navigate("MATERIAL_TOP_NAVIGATOR");
+          }}
           text="View All"
           icon={
             <FontAwesome name="arrow-right" size={10} color={color.blue600} />
@@ -57,7 +63,14 @@ const Top4Devices = () => {
       </View>
       <View style={styles.card}>
         {data?.slice(0, 4).map((item) => (
-          <MiniDeviceCard key={item._id} deviceName={item.deviceName} />
+          <MiniDeviceCard
+            key={item._id}
+            deviceName={item.deviceName}
+            _id={item._id}
+            deviceType={item.deviceType}
+            ipAddress={item.ipAddress}
+            roomNumber={item.roomNumber}
+          />
         ))}
       </View>
     </View>

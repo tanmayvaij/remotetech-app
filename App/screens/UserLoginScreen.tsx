@@ -4,7 +4,6 @@ import CustomTextInput from "../components/CustomTextInput";
 import { FontAwesome } from "@expo/vector-icons";
 import FormContainer from "../components/FormContainer";
 import { color } from "../theme";
-import { setItemAsync } from "expo-secure-store";
 import { useAuth } from "../components/AuthProvider";
 import { useUserLoginMutation } from "../api/authApiSlice";
 import { useFormik } from "formik";
@@ -32,25 +31,31 @@ interface ApiResponseProps {
 const UserLoginScreen = () => {
   const { setAuthState } = useAuth();
 
-  const [userLoginMutation] = useUserLoginMutation();
+  const [userLoginMutation, { isLoading }] = useUserLoginMutation();  
 
   const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
+    validateOnBlur: false,
+    validateOnChange: false,
     validationSchema: UserLoginFormValidator,
     initialValues: {
       email: "",
       password: "",
     },
     onSubmit: async () => {
-      const {
-        data: { status, authToken, message },
-      } = (await userLoginMutation(values)) as { data: ApiResponseProps };
-
-      if (status) {
-        setItemAsync("authToken", authToken!);
-        setAuthState({ authToken: authToken!, isAuthenticated: status });
-      } else {
-        console.log(message);
+      
+      try {
+        const {
+          data
+        } = (await userLoginMutation(values)) as { data: ApiResponseProps };
+        
+        if (data.status)
+          setAuthState({ authToken: data.authToken!, isAuthenticated: data.status });
+        else console.log(data.message);
       }
+      catch(err) {
+        console.log(err);
+      }
+
     },
   });
 
@@ -59,6 +64,7 @@ const UserLoginScreen = () => {
       onPress={handleSubmit}
       icon={<FontAwesome name="sign-in" size={20} color={color.white} />}
       text="Login"
+      isLoading={isLoading}
     >
       <View style={styles.imageContainerStyle}>
         <Image
@@ -71,7 +77,7 @@ const UserLoginScreen = () => {
         labelText="Enter Your Email"
         inputMode="email"
         onChangeText={handleChange("email")}
-        onBlur={handleBlur}
+        onBlur={handleBlur("email")}
         errorMessage={errors.email}
         value={values.email}
       />
@@ -81,7 +87,7 @@ const UserLoginScreen = () => {
         inputMode="text"
         secureTextEntry
         onChangeText={handleChange("password")}
-        onBlur={handleBlur}
+        onBlur={handleBlur("password")}
         errorMessage={errors.password}
         value={values.password}
       />

@@ -1,5 +1,4 @@
 import React, { useState, createContext, useContext, useEffect } from "react";
-import { getItemAsync } from "expo-secure-store";
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -27,11 +26,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   });
 
   useEffect(() => {
-    (async () => {
-      const storedAuthToken = await getItemAsync("authToken");
-      if (storedAuthToken)
-        setAuthState({ authToken: storedAuthToken, isAuthenticated: true });
-    })();
+      
+    // setAuthState({ authToken: storedAuthToken, isAuthenticated: true });
+    console.log(authState);
+    
+    
   }, [authState.isAuthenticated]);
 
   return (

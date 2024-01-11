@@ -36,6 +36,7 @@ interface GetAllDeviceProps {
   ipAddress: string;
   roomNumber: string;
   deviceType: string;
+  socketNumber: string
 }
 
 interface DeviceByTypeResponseProps extends GetAllDeviceProps {}

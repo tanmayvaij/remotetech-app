@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import React from "react";
 import { color, fontFamily } from "../theme";
 import { useUserProfileQuery } from "../api/authApiSlice";
+import { useAuth } from "./AuthProvider";
 
 const styles = StyleSheet.create({
   card: {
@@ -33,12 +34,14 @@ const styles = StyleSheet.create({
 });
 
 const WelcomeCard = () => {
-  const { data: userProfile } = useUserProfileQuery();
+
+  const { authToken } = useAuth()
+  const { data: userProfile } = useUserProfileQuery(authToken);
 
   return (
     <View style={styles.card}>
       <View style={styles.welcomeHeader}>
-        <Text style={styles.welcomeMessage}>👋 Welcome, </Text>
+        <Text style={styles.welcomeMessage}>👋 Hi, </Text>
         <Text style={[styles.welcomeMessage, styles.userNameStyle]}>
           {userProfile?.firstName} {userProfile?.lastName}
         </Text>

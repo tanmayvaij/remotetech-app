@@ -7,6 +7,7 @@ interface DeviceFormFieldsProps {
   roomNumber: string;
   deviceName: string;
   ipAddress: string;
+  socketNumber: string
 }
 
 interface DeviceFormProps {
@@ -26,6 +27,7 @@ const DeviceForm: React.FC<DeviceFormProps> = ({
     roomNumber: initialValues ? initialValues.roomNumber : "",
     deviceName: initialValues ? initialValues.deviceName : "",
     ipAddress: initialValues ? initialValues.ipAddress : "",
+    socketNumber: initialValues ? initialValues.socketNumber : "",
   });
 
   const onSubmit = () => {
@@ -70,6 +72,13 @@ const DeviceForm: React.FC<DeviceFormProps> = ({
         inputMode="text"
         value={formValues.ipAddress}
         onChangeText={(text) => handleInputChange("ipAddress", text)}
+      />
+      <CustomTextInput
+        placeholder="Socket Number"
+        labelText="Enter Socket Number"
+        inputMode="decimal"
+        value={formValues.socketNumber}
+        onChangeText={(text) => handleInputChange("socketNumber", text)}
       />
     </FormContainer>
   );

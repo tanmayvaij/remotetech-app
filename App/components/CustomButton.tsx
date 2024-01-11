@@ -2,6 +2,7 @@ import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { color, fontFamily } from "../theme";
 import { CustomButtonProps } from "../types";
+import CustomActivityIndicator from "./CustomActivityIndicator";
 
 const styles = StyleSheet.create({
   buttonContainerStyle: {
@@ -67,6 +68,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   fullWidth = true,
   disabled,
   size,
+  isLoading,
 }) => {
   return (
     <View
@@ -97,21 +99,30 @@ const CustomButton: React.FC<CustomButtonProps> = ({
           size === "sm" && { paddingVertical: 8 },
         ]}
       >
-        {text && (
-          <Text
-            style={[
-              styles.buttonTextStyle,
-              light && styles.lightButtonTextStyle,
-              size === "sm" && { fontSize: 10 },
-            ]}
-          >
-            {text}
-          </Text>
+        {isLoading ? (
+          <CustomActivityIndicator
+            indicatorColor={color.white}
+            indicatorsize={20}
+          />
+        ) : (
+          <View style={{ flexDirection: "row" }}>
+            {text && (
+              <Text
+                style={[
+                  styles.buttonTextStyle,
+                  light && styles.lightButtonTextStyle,
+                  size === "sm" && { fontSize: 10 },
+                ]}
+              >
+                {text}
+              </Text>
+            )}
+            {text && icon && (
+              <View style={{ marginLeft: size === "sm" ? 5 : 10 }} />
+            )}
+            {icon && icon}
+          </View>
         )}
-        {text && icon && (
-          <View style={{ marginLeft: size === "sm" ? 5 : 10 }} />
-        )}
-        {icon && icon}
       </Pressable>
     </View>
   );

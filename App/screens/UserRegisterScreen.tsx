@@ -5,7 +5,6 @@ import { FontAwesome } from "@expo/vector-icons";
 import FormContainer from "../components/FormContainer";
 import { StyleSheet, View, Image } from "react-native";
 import { useAuth } from "../components/AuthProvider";
-import { setItemAsync } from "expo-secure-store";
 import { useUserRegistrationMutation } from "../api/authApiSlice";
 import { useFormik } from "formik";
 import { UserRegistrationFormValidator } from "../validators/UserRegisistrationFormValidator";
@@ -32,9 +31,11 @@ interface ApiResponseProps {
 const UserRegisterScreen = () => {
   const { setAuthState } = useAuth();
 
-  const [userRegistrationMutation] = useUserRegistrationMutation();
+  const [userRegistrationMutation, { isLoading }] = useUserRegistrationMutation();
 
   const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
+    validateOnChange: false,
+    validateOnBlur: false,
     validationSchema: UserRegistrationFormValidator,
     initialValues: {
       firstName: "",
@@ -44,20 +45,15 @@ const UserRegisterScreen = () => {
       phone: "",
     },
     onSubmit: async () => {
-
       const {
         data: { status, message, authToken },
       } = (await userRegistrationMutation(values)) as {
         data: ApiResponseProps;
       };
 
-      if (status) {
-        setItemAsync("authToken", authToken!);
+      if (status)
         setAuthState({ authToken: authToken!, isAuthenticated: status });
-      } else {
-        console.log(message);
-      }
-
+      else console.log(message);
     },
   });
 
@@ -68,6 +64,7 @@ const UserRegisterScreen = () => {
         <FontAwesome name="pencil-square-o" size={20} color={color.white} />
       }
       text="Register"
+      isLoading={isLoading}
     >
       <View style={styles.imageContainerStyle}>
         <Image
@@ -81,7 +78,7 @@ const UserRegisterScreen = () => {
         inputMode="text"
         value={values.firstName}
         onChangeText={handleChange("firstName")}
-        onBlur={handleBlur}
+        onBlur={handleBlur("firstName")}
         errorMessage={errors.firstName}
       />
       <CustomTextInput
@@ -90,7 +87,7 @@ const UserRegisterScreen = () => {
         inputMode="text"
         value={values.lastName}
         onChangeText={handleChange("lastName")}
-        onBlur={handleBlur}
+        onBlur={handleBlur("lastName")}
         errorMessage={errors.lastName}
       />
       <CustomTextInput
@@ -99,7 +96,7 @@ const UserRegisterScreen = () => {
         inputMode="email"
         value={values.email}
         onChangeText={handleChange("email")}
-        onBlur={handleBlur}
+        onBlur={handleBlur("email")}
         errorMessage={errors.email}
       />
       <CustomTextInput
@@ -108,7 +105,7 @@ const UserRegisterScreen = () => {
         inputMode="text"
         value={values.phone}
         onChangeText={handleChange("phone")}
-        onBlur={handleBlur}
+        onBlur={handleBlur("phone")}
         errorMessage={errors.phone}
       />
       <CustomTextInput
@@ -117,7 +114,7 @@ const UserRegisterScreen = () => {
         inputMode="text"
         value={values.password}
         onChangeText={handleChange("password")}
-        onBlur={handleBlur}
+        onBlur={handleBlur("password")}
         errorMessage={errors.password}
         secureTextEntry
       />

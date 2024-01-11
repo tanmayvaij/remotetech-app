@@ -66,7 +66,7 @@ const style = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 3,
     alignItems: "center",
-    borderTopRightRadius: 10
+    borderTopRightRadius: 10,
   },
   netNumber: {
     color: color.white,
@@ -86,7 +86,16 @@ const DeviceCard: React.FC<DeviceCardProps> = ({
   roomNumber,
   _id,
   addedOn,
+  deviceType,
+  socketNumber
 }) => {
+
+  const deviceTypeNavigationMap =  {
+    appliance:"APPLIANCE_CONTROL_SCREEN",
+    machine:"MACHINE_CONTROL_SCREEN",
+    camera:"CAMERA_CONTROL_SCREEN",
+  }
+
   const navigation = useNavigation<DeviceListScreenNavigationProps>();
 
   const editDeviceCallBack = () => {
@@ -95,7 +104,22 @@ const DeviceCard: React.FC<DeviceCardProps> = ({
       ipAddress,
       roomNumber,
       _id,
+      socketNumber
     });
+  };
+
+  const controllDeviceCallBack = () => {
+
+   
+      navigation.navigate(deviceTypeNavigationMap[deviceType], {
+        deviceName,
+        ipAddress,
+        roomNumber,
+        _id,
+        socketNumber
+      });
+
+
   };
 
   const [removeDeviceMutation] = useRemoveDeviceMutation();
@@ -114,10 +138,14 @@ const DeviceCard: React.FC<DeviceCardProps> = ({
         <View style={style.buttonsGroup}>
           <CustomButton
             size="sm"
-            onPress={() => {}}
+            onPress={controllDeviceCallBack}
             fullWidth={false}
             icon={
-              <Ionicons name="game-controller" size={14} color={color.blue600} />
+              <Ionicons
+                name="game-controller"
+                size={14}
+                color={color.blue600}
+              />
             }
             light
           />
@@ -149,8 +177,12 @@ const DeviceCard: React.FC<DeviceCardProps> = ({
             paddingHorizontal: 10,
           }}
         >
-          <Text style={{ fontFamily: fontFamily.regular, fontSize: 12 }}>Updated On</Text>
-          <Text style={{ fontFamily: fontFamily.regular, fontSize: 12 }}>{addedOn}</Text>
+          <Text style={{ fontFamily: fontFamily.regular, fontSize: 12 }}>
+            Updated On
+          </Text>
+          <Text style={{ fontFamily: fontFamily.regular, fontSize: 12 }}>
+            {addedOn}
+          </Text>
         </View>
       </View>
 

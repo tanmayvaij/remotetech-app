@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 });
 
 interface DeviceActionCardProps {
-  deviceType: string;
+    deviceType: string;
 }
 
 const DeviceActionCard: React.FC<DeviceActionCardProps> = ({ deviceType }) => {

@@ -12,6 +12,7 @@ interface DevicesDisplayCardProps {
 const DevicesDisplayCard: React.FC<DevicesDisplayCardProps> = ({
   deviceType,
 }) => {
+
   const { data, isLoading, isFetching } = useGetDevicesByTypeQuery(deviceType);
 
   if (isLoading || isFetching) return <CustomActivityIndicator />;
@@ -31,6 +32,8 @@ const DevicesDisplayCard: React.FC<DevicesDisplayCardProps> = ({
               deviceName={item.deviceName}
               ipAddress={item.ipAddress}
               roomNumber={item.roomNumber}
+              deviceType={deviceType}
+              socketNumber={item.socketNumber}
             />
           );
         }}
